@@ -1,0 +1,24 @@
+#!/bin/bash
+
+USER_ID=$(id -u)
+USERNAME=$(id -un)
+XSOCK=/tmp/.X11-unix
+XAUTH=/tmp/.docker.xauth
+
+echo "Starting the socat docker forwarding for gui windows"
+socat TCP-LISTEN:6000,reuseaddr,fork UNIX-CLIENT:\"$DISPLAY\" &
+echo "Starting the container"
+sudo docker run -it --rm \
+										--net=host \
+										--ipc=host \
+										--privileged \
+										-e USER_ID=${USER_ID} \
+										-e USERNAME=${USERNAME} \
+										-v ${XSOCK}:${XSOCK}:rw \
+										-v ${XAUTH}:${XAUTH}:rw \
+										-e XAUTHORITY=${XAUTH} \
+										-e DISPLAY=`ipconfig getifaddr en0`:0 \
+										-v /Users/${USERNAME}:/mnt/host_home \
+										--cap-add=ALL \
+										--name ros-kinetic-${USERNAME} \
+										warrierr_container
