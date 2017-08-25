@@ -16,10 +16,10 @@ RUN sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) 
 		sudo apt update && \
 		sudo apt install -y ros-kinetic-desktop-full
 
-RUN sh -c 'echo "source /opt/ros/kinetic/setup.bash" > ~/.bashrc' && \
-		sh -c 'echo "export ROS_MASTER_URI=http://$(/sbin/ip -o -4 addr list eth0 | awk '{print $4}' | cut -d/ -f1):11311" > ~/.bashrc' && \
-		sh -c 'echo "export ROS_IP=$(/sbin/ip -o -4 addr list eth0 | awk '{print $4}' | cut -d/ -f1)" > ~/.bashrc' && \
-		sh -c 'source ~/.bashrc'
+RUN sudo sh -c 'echo "source /opt/ros/kinetic/setup.bash" > ~/.bashrc' && \
+		sudo sh -c 'echo "export ROS_MASTER_URI=http://$(/sbin/ip -o -4 addr list eth0 | awk '{print $4}' | cut -d/ -f1):11311" > ~/.bashrc' && \
+		sudo sh -c 'echo "export ROS_IP=$(/sbin/ip -o -4 addr list eth0 | awk '{print $4}' | cut -d/ -f1)" > ~/.bashrc' && \
+		sudo sh -c 'source ~/.bashrc'
 
 RUN sudo apt install -y ros-kinetic-joint-state-publisher \
 												ros-kinetic-rqt-common-plugins 
