@@ -22,8 +22,6 @@ RUN /bin/bash -c 'echo "export ROS_MASTER_URI=http://$(/sbin/ip -o -4 addr list 
 
 RUN /bin/bash -c 'echo "export ROS_IP=$(/sbin/ip -o -4 addr list eth0 | awk ""'"'{print $4}'"'"" | cut -d/ -f1)" > ~/.bashrc' 
 		
-RUN /bin/bash -c 'source ~/.bashrc'
-
 RUN sudo apt install -y ros-kinetic-joint-state-publisher \
 												ros-kinetic-rqt-common-plugins 
 RUN sudo apt update && \
