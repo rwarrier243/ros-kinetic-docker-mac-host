@@ -18,9 +18,9 @@ RUN sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) 
 
 RUN /bin/bash -c 'echo "source /opt/ros/kinetic/setup.bash" >> ~/.bashrc' 
 
-RUN /bin/bash -c 'echo "export ROS_MASTER_URI=http://$(/sbin/ip -o -4 addr list eth0 | awk '{print $4}' | cut -d/ -f1):11311" >> ~/.bashrc' 
+RUN /bin/bash -c 'echo "export ROS_MASTER_URI=http://$(/sbin/ip -o -4 addr list eth0 | awk ""'"'{print $4}'"'"" | cut -d/ -f1):11311" >> ~/.bashrc' 
 
-RUN /bin/bash -c 'echo "export ROS_IP=$(/sbin/ip -o -4 addr list eth0 | awk '{print $4}' | cut -d/ -f1)" > ~/.bashrc' 
+RUN /bin/bash -c 'echo "export ROS_IP=$(/sbin/ip -o -4 addr list eth0 | awk ""'"'{print $4}'"'"" | cut -d/ -f1)" > ~/.bashrc' 
 		
 RUN /bin/bash -c 'source ~/.bashrc'
 
