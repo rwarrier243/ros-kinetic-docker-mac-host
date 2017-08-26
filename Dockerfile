@@ -37,7 +37,14 @@ RUN sudo apt update && \
 												evince \
 												kmod \
 												iproute \
-												nvidia-current
+
+# install the nvidia driver
+RUN sudo apt update && \
+		sudo apt install -y mesa-utils binutils
+ADD NVIDIA-DRIVER.run /tmp/NVIDIA-DRIVER.run
+RUN sh /tmp/NVIDIA-DRIVER.run -a -N --ui=none --no-kernel-module
+RUN rm /tmp/NVIDIA-DRIVER.run
+
 RUN sudo rosdep init
 
 RUN rosdep update && \
