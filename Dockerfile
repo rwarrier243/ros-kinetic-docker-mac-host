@@ -30,6 +30,8 @@ RUN sudo apt update && \
 												python-wstool \
 												build-essential
 
+ENV DEBIAN_FRONTEND noninteractive
+
 RUN sudo apt update && \
 		sudo apt install -y liburdfdom-tools \
 												evince \
