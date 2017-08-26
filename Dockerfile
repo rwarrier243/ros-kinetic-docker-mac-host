@@ -31,13 +31,10 @@ RUN sudo apt update && \
 												build-essential
 
 RUN sudo apt update && \
-		sudo apt install -y mesa-utils \
-												can-utils \
-												liburdfdom-tools \
+		sudo apt install -y liburdfdom-tools \
 												evince \
 												kmod \
 												iproute \
-												iputils-ping \
 												nvidia-current
 RUN sudo rosdep init
 
