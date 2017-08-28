@@ -7,7 +7,7 @@ RUN useradd -g video --create-home --shell /bin/bash warrierr && \
 		chmod 0400 /etc/sudoers.d/warrierr
 
 USER warrierr
-WORKDIR /mnt/host_home/ros-docker
+WORKDIR /home/warrierr
 
 RUN sudo apt update && sudo apt install -y apt-utils tmux vim lsb-release
 
@@ -15,13 +15,7 @@ RUN sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) 
 		sudo apt-key adv --keyserver hkp://pgp.mit.edu:80 --recv-key 421C365BD9FF1F717815A3895523BAEEB01FA116 && \
 		sudo apt update && \
 		sudo apt install -y ros-kinetic-desktop-full
-
-RUN /bin/bash -c 'echo "source /opt/ros/kinetic/setup.bash" >> ~/.bashrc' 
-
-RUN /bin/bash -c 'echo "export ROS_MASTER_URI=http://$(/sbin/ip -o -4 addr list eth0 | awk ""'"'{print $4}'"'"" | cut -d/ -f1):11311" >> ~/.bashrc' 
-
-RUN /bin/bash -c 'echo "export ROS_IP=$(/sbin/ip -o -4 addr list eth0 | awk ""'"'{print $4}'"'"" | cut -d/ -f1)" > ~/.bashrc' 
-		
+	
 RUN sudo apt install -y ros-kinetic-joint-state-publisher \
 												ros-kinetic-rqt-common-plugins 
 RUN sudo apt update && \
@@ -36,16 +30,18 @@ RUN sudo apt update && \
 		sudo apt install -y liburdfdom-tools \
 												evince \
 												kmod \
-												iproute \
+												iproute 
 
 # install the nvidia driver
 RUN sudo apt update && \
 		sudo apt install -y mesa-utils binutils
 ADD NVIDIA-DRIVER.run /tmp/NVIDIA-DRIVER.run
-RUN sh /tmp/NVIDIA-DRIVER.run -a -N --ui=none --no-kernel-module
-RUN rm /tmp/NVIDIA-DRIVER.run
+RUN sudo sh /tmp/NVIDIA-DRIVER.run -a -N --ui=none --no-kernel-module
+RUN sudo rm /tmp/NVIDIA-DRIVER.run
 
 RUN sudo rosdep init
 
-RUN rosdep update && \
- 		rosdep install --from-paths src --ignore-src -y				
+RUN rosdep update
+
+ADD localConfig /home/warrierr/localConfig
+ENTRYPOINT "./localConfig" && /bin/bash
