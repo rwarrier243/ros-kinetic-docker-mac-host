@@ -5,6 +5,8 @@ USERNAME=$(id -un)
 XSOCK=/tmp/.X11-unix
 XAUTH=/tmp/.docker.xauth
 IMAGE=jaguar243/ros-kinetic-docker-mac-host
+ip=$(ifconfig en0 | grep inet | awk '$1=="inet" {print $2}')
+xhost + $ip
 
 #echo "Starting the socat docker forwarding for gui windows"
 #socat TCP-LISTEN:6000,reuseaddr,fork UNIX-CLIENT:\"$DISPLAY\" &
@@ -18,7 +20,7 @@ sudo docker run -it --rm \
 										-v ${XSOCK}:${XSOCK}:rw \
 										-v ${XAUTH}:${XAUTH}:rw \
 										-e XAUTHORITY=${XAUTH} \
-										-e DISPLAY=`ipconfig getifaddr en0`:0 \
+										-e DISPLAY=$ip:0 \
 										-v /Users/${USERNAME}:/mnt/host_home \
 										--cap-add=ALL \
 										--name ros-kinetic-${USERNAME} \
