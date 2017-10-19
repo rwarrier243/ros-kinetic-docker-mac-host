@@ -5,5 +5,5 @@ export ROS_MASTER_URI=http://$(/sbin/ip -o -4 addr list eth0 | awk '{if(NR==1)pr
 export ROS_IP=$(/sbin/ip -o -4 addr list eth0 | awk '{if(NR==1)print $4}' | cut -d/ -f1)
 EOT
 echo "Almost there...."
-sudo apt install -y ros-kinetic-rosapi ros-kinetic-rosauth libbson-dev python-bson iputils-ping >/dev/null 2>&1
+sudo apt install -y ros-kinetic-rosapi ros-kinetic-rosauth libbson-dev python-bson iputils-ping wget >/dev/null 2>&1
 echo "done!"
