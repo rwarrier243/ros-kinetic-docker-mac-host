@@ -1,0 +1,26 @@
+#!/bin/bash
+
+USER_ID=$(id -u)
+USERNAME=$(id -un)
+XSOCK=/tmp/.X11-unix
+XAUTH=/tmp/.docker.xauth
+IMAGE=jaguar243/ros-kinetic-docker-mac-host
+ip=$(ifconfig en0 | grep inet | awk '$1=="inet" {print $2}')
+sudo xhost + $ip
+
+echo "Starting the container"
+sudo docker run -it --rm \
+										--net=host \
+										--pid=host \
+										--privileged \
+										-e USER_ID=${USER_ID} \
+										-e USERNAME=${USERNAME} \
+										-v ${XSOCK}:${XSOCK}:rw \
+										-v ${XAUTH}:${XAUTH}:rw \
+										-e XAUTHORITY=${XAUTH} \
+										-e DISPLAY=$ip:0 \
+										-v /Users/${USERNAME}:/mnt/host_home \
+										--cap-add=ALL \
+										--name ros-kinetic-${USERNAME} \
+										--expose=9090 \
+										jaguar243/ros-kinetic-docker-mac-host
